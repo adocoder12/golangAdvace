@@ -1,7 +1,17 @@
 package model
 
+import "strings"
+
 type Movie struct {
-	name        string
-	year        int
-	description string
+	ID          int
+	Name        string
+	Year        int
+	Description string
+}
+
+func Capitalize(s string) string {
+	if s == "" {
+		return ""
+	}
+	return strings.ToUpper(s[:1]) + strings.ToLower(s[1:])
 }
