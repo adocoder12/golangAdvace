@@ -189,11 +189,3 @@ func (f *FileDB) DeleteMovie(movieID int) error {
 	fmt.Println("Movie deleted successfully")
 	return f.saveMovies(movies)
 }
-
-type FileDBInterface interface {
-	ShowMovies() error
-	ShowMovie(movieID int) error
-	AddMovie(name string, description string, year int) error
-	UpdateMovie(movieID int, name, description string, year int) error
-	DeleteMovie(movieID int) error
-}
