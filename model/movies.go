@@ -3,10 +3,10 @@ package model
 import "strings"
 
 type Movie struct {
-	ID          int
-	Name        string
-	Year        int
-	Description string
+	ID          int    `json:"id"`
+	Name        string `json:"name"`
+	Year        int    `json:"year"`
+	Description string `json:"description"`
 }
 
 func Capitalize(s string) string {
