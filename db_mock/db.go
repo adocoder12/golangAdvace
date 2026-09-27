@@ -23,20 +23,19 @@ func NewDabase(database_Name string) *DB {
 	}
 }
 
-func (db *DB) ShowMovies() {
+func (db *DB) ShowMovies() error {
 	fmt.Println("============ Movies =================")
 	if len(db.Movies) == 0 {
-		fmt.Println("No movies to display")
-		return
+		fmt.Println()
+		return fmt.Errorf("No movies to display")
 	}
 	for _, m := range db.Movies {
-
 		fmt.Printf("Movie ID: %d\nName: %s\nPublished: %d\nDescription: %s\n", m.ID, m.Name, m.Year, m.Description)
 		if len(db.Movies) > 1 {
 			fmt.Println("***=============================***")
 		}
-
 	}
+	return nil
 }
 func (db *DB) AddMovie(name, description string, year int) error {
 	if name == "" && year == 0 && description == "" {
@@ -106,7 +105,7 @@ func (db *DB) DeleteMovie(movieID int) error {
 }
 
 type DBInterface interface {
-	ShowMovies()
+	ShowMovies() error
 	ShowMovie(movieID int) error
 	AddMovie(name string, description string, year int) error
 	UpdateMovie(movieID int, name, description string, year int) error
