@@ -8,43 +8,38 @@ import (
 )
 
 type App struct {
-	// Embedding the interface allows App to accept ANY database type
-	// that implements dbmock.DBInterface (both dbmock and fileDB do!)
 	dbmock.DBInterface
 }
 
-// Our app constructor accepts the interface, not a concrete struct pointer
-func NewApp(database dbmock.DBInterface) *App {
+// Our app constructor
+func NewApp(db *dbmock.DB, fileDb *fileDb.FileDB) *App {
 	return &App{
-		DBInterface: database,
+		db,
+		fileDb,
 	}
 }
 
 func main() {
-	// --- POLYMORPHISM IN ACTION ---
-	// Option 1: Use the in-memory RAM database
-	// database := dbmock.NewDabase("Favorites Movies Collection")
-	// db := dbmock.NewDabase("Favorites Movies Collection")
+	db := dbmock.NewDabase("Favorites Movies Collection")
 	fileDb := fileDb.NewFileDB("movies.json")
-	// Inject whichever database you want into the App
-	app := NewApp(fileDb)
-	app.ShowMovies()
+	app := NewApp(db, fileDb)
+	app.DBInterface.ShowMovies()
 
 	//Adding movie
-	if err := app.AddMovie("life of pi", "Life philosophy", 2012); err != nil {
+	if err := app.DBInterface.AddMovie("life of pi", "Life philosophy", 2012); err != nil {
 		fmt.Println(err.Error())
 	}
-	app.ShowMovies()
+	app.FileDBInterface.ShowMovies()
 	//Updating movie
 
 	fmt.Println("Updating.....")
-	if err := app.UpdateMovie(1, "wolwerine", "X men life", 2015); err != nil {
+	if err := app.DBInterface.UpdateMovie(1, "wolwerine", "X men life", 2015); err != nil {
 		fmt.Println(err.Error())
 	}
-	app.ShowMovies()
+	app.FileDBInterface.ShowMovies()
 	//deleting movie
 	fmt.Println("deleting.....")
-	app.DeleteMovie(1)
+	app.DBInterface.DeleteMovie(1)
 	fmt.Println("Loading movies.....")
-	app.ShowMovies()
+	app.DBInterface.ShowMovies()
 }
